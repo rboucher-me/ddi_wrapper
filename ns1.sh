@@ -20,7 +20,7 @@ fi
 
 case "$1" in
 	start)
-        docker-compose -p $PROJECT -f $DOCKER_COMPOSE up -d $CONTAINERS
+		docker-compose -p $PROJECT -f $DOCKER_COMPOSE up -d $CONTAINERS
 		;;
 	stop)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE stop $CONTAINERS
@@ -28,7 +28,7 @@ case "$1" in
 	status)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE ps
 		;;
-        delete)
+	delete)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v $CONTAINERS
 		;;    
 	*)
