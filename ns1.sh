@@ -1,19 +1,17 @@
 #!/bin/sh
-#
-#
 
-### BEGIN Configuration Items
+#--- BEGIN Edit Configuration Items
 TAG=3.2.3
 POP_ID=lab
 SERVER_ID=corenode
 PROJECT=ddi
 CONTAINERS='data core xfr'
 DOCKER_COMPOSE=docker-compose.yml
-### END Configuration Items
+#--- END Edit Configuration Items
 
 export TAG POP_ID SERVER_ID
 
-# It is not safe to start if we don't have a docker-compose file...
+#--- Don't start without a docker-compose file...
 if [ ! -f $DOCKER_COMPOSE ]; then
 	echo "$DOCKER_COMPOSE does not exist! - Aborting..."
 	exit 1
@@ -29,7 +27,7 @@ case "$1" in
 	status)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE ps
 		;;
-    delete)
+        delete)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v $CONTAINERS
 		;;    
 	*)
