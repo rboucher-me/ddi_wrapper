@@ -1,16 +1,17 @@
 #!/bin/sh
-# version 1.0 - 03/08/2021 - rboucher@ns1.com
+# version 1.1 - 03/08/2021 - rboucher@ns1.com
 
 #--- BEGIN Edit Configuration Items
 TAG=3.2.5
 POP_ID=lab
 SERVER_ID=`hostname`
 PROJECT=ddi
+CORE_HOSTS='node1,node2'
 CONTAINERS='data core dns dhcp monitor'
 DOCKER_COMPOSE=docker-compose.yml
 #--- END Edit Configuration Items
 
-export TAG POP_ID SERVER_ID
+export TAG POP_ID SERVER_ID CORE_HOSTS
 
 #--- Don't start without a docker-compose file...
 if [ ! -f $DOCKER_COMPOSE ]; then
