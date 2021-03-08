@@ -1,12 +1,12 @@
 #!/bin/sh
-# version 0.1 - 01/05/2021 - rboucher@ns1.com
+# version 1.0 - 03/08/2021 - rboucher@ns1.com
 
 #--- BEGIN Edit Configuration Items
-TAG=3.2.3
+TAG=3.2.5
 POP_ID=lab
-SERVER_ID=corenode
+SERVER_ID=`hostname`
 PROJECT=ddi
-CONTAINERS='data core xfr'
+CONTAINERS='data core dns dhcp monitor'
 DOCKER_COMPOSE=docker-compose.yml
 #--- END Edit Configuration Items
 
@@ -29,7 +29,7 @@ case "$1" in
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE ps
 		;;
 	delete)
-		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v $CONTAINERS
+		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v
 		;;    
 	*)
 		echo "Usage: $0 {start|stop|status|delete}"
