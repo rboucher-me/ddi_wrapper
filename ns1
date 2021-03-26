@@ -3,15 +3,15 @@
 
 #=== BEGIN Configuration Items ===#
 
+DOCKER_COMPOSE=docker-compose.yml
 TAG=3.3.0
 POP_ID=lab
 SERVER_ID=`hostname`
 PROJECT=ddi
 CONTAINERS='data core dns dhcp monitor'
-DOCKER_COMPOSE=docker-compose.yml
 
 #--- EDGE Node Configuration Items
-CORE_HOSTS='node1,node2'
+CORE_HOSTS='core'
 
 #--- CLOUDSYNC Configuration Items
 CLOUDSYNC=true
@@ -21,10 +21,7 @@ CLOUDSYNC_TAG=1.0.4
 
 #=== END Configuration Items ===#
 
-export TAG POP_ID SERVER_ID CORE_HOSTS CLOUDSYNC_TAG
-if [ "$CLOUDSYNC" = true ]; then
-	echo "!"
-fi
+export TAG POP_ID SERVER_ID CORE_HOSTS
 
 #--- Don't start without a docker-compose file...
 if [ ! -f $DOCKER_COMPOSE ]; then
