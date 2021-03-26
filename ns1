@@ -1,17 +1,30 @@
 #!/bin/sh
-# version 1.1 - 03/08/2021 - rboucher@ns1.com
+# version 1.2 - 03/26/2021 - rboucher@ns1.com
 
-#--- BEGIN Edit Configuration Items
-TAG=3.2.5
+#=== BEGIN Configuration Items ===#
+
+TAG=3.3.0
 POP_ID=lab
 SERVER_ID=`hostname`
 PROJECT=ddi
-CORE_HOSTS='node1,node2'
 CONTAINERS='data core dns dhcp monitor'
 DOCKER_COMPOSE=docker-compose.yml
-#--- END Edit Configuration Items
 
-export TAG POP_ID SERVER_ID CORE_HOSTS
+#--- EDGE Node Configuration Items
+CORE_HOSTS='node1,node2'
+
+#--- CLOUDSYNC Configuration Items
+CLOUDSYNC=true
+CLOUDSYNC_PROJECT=cloudsync
+CLOUDSYNC_DOCKER_COMPOSE=cloudsync.yml
+CLOUDSYNC_TAG=1.0.4
+
+#=== END Configuration Items ===#
+
+export TAG POP_ID SERVER_ID CORE_HOSTS CLOUDSYNC_TAG
+if [ "$CLOUDSYNC" = true ]; then
+	echo "!"
+fi
 
 #--- Don't start without a docker-compose file...
 if [ ! -f $DOCKER_COMPOSE ]; then
@@ -22,19 +35,31 @@ fi
 case "$1" in
 	start)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE up -d $CONTAINERS
+		if [ "$CLOUDSYNC" = true ]; then
+			TAG=$CLOUDSYNC_TAG docker-compose -p $CLOUDSYNC_PROJECT -f $CLOUDSYNC_DOCKER_COMPOSE up -d
+		fi
 		;;
 	stop)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE stop $CONTAINERS
+		if [ "$CLOUDSYNC" = true ]; then
+			TAG=$CLOUDSYNC_TAG docker-compose -p $CLOUDSYNC_PROJECT -f $CLOUDSYNC_DOCKER_COMPOSE stop
+		fi
 		;;
 	status)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE ps
+		if [ "$CLOUDSYNC" = true ]; then
+			TAG=$CLOUDSYNC_TAG docker-compose -p $CLOUDSYNC_PROJECT -f $CLOUDSYNC_DOCKER_COMPOSE ps
+		fi
 		;;
 	delete)
 		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v
-		;;    
+		if [ "$CLOUDSYNC" = true ]; then
+			TAG=$CLOUDSYNC_TAG docker-compose -p $CLOUDSYNC_PROJECT -f $CLOUDSYNC_DOCKER_COMPOSE down -v
+		fi
+		;;
 	*)
 		echo "Usage: $0 {start|stop|status|delete}"
-		exit 1 
+		exit 1
 esac
 
 exit 0
