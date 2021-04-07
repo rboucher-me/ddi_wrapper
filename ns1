@@ -4,7 +4,7 @@
 #=== BEGIN Configuration Items ===#
 
 DOCKER_COMPOSE=docker-compose.yml
-TAG=3.3.0
+TAG=3.3.1
 POP_ID=lab
 SERVER_ID=`hostname`
 PROJECT=ddi
@@ -49,10 +49,10 @@ case "$1" in
 		fi
 		;;
 	delete)
-		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v
 		if [ "$CLOUDSYNC" = true ]; then
 			TAG=$CLOUDSYNC_TAG docker-compose -p $CLOUDSYNC_PROJECT -f $CLOUDSYNC_DOCKER_COMPOSE down -v
 		fi
+		docker-compose -p $PROJECT -f $DOCKER_COMPOSE down -v
 		;;
 	*)
 		echo "Usage: $0 {start|stop|status|delete}"
